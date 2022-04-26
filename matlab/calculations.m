@@ -24,9 +24,29 @@ activeNodes = 2:nodes-1;
 activeDOF = 2*activeNodes(1)-1:2*activeNodes(end);
 nodalLoads = getNodalLoads(params);
 
-w_theta = nodalLoads(activeDOF) \ K_Total(activeDOF);
+u = nodalLoads(activeDOF) \ K_Total(activeDOF);
 
+u = [0; 0; u; 0; 0];
 
+pointsNo = 100;
+xi = linspace(-1,1,100);
+x = linspace(0,params.beamLength,params,params.elementsNo*(pointsNo-1))
+
+H1 = 0.25 * (1-xi).^2 * (2+xi);
+H2 = 0.25 * (1-xi).^2 * (xi+1);
+H3 = 0.25 * (1+xi).^2 * (2-xi);
+H4 = 0.25 * (1+xi).^2 * (1-xi);
+
+for element = 1:params.elementsNo
+    wElement = H1*u(element) + H3*u(element+2) + ...
+        params.Le * (H2*u(element+1)+H4*u(element+3));
+
+    if element == 1
+        wBeam(1:pointsNo) = wElement(:);
+    else
+        wBeam((element-1)*pointsNo:element*pointsNo) = wElement(:);
+    end
+end
 
 end
 
