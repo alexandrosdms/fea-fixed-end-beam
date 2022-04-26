@@ -34,5 +34,3 @@ end
 
 
 [L_h_ratio, w_midpoint, theta_midpoint] = calculations(sol, params)
-
-

@@ -41,10 +41,11 @@ params.load_Pz  = -38.46*params.C;
 % Calculating Moment of Inertia
 params.I        = 0.001;
 
-% Total Degrees of Freedom
+% FEM Associated
 nodeDOF = 2;
 params.nodes = params.elementsNo + 1;
-totalDOF = nodes*nodeDOF;
+params.totalDOF = params.nodes*nodeDOF;
+params.Le = params.L/params.elementsNo;
 
 %% Geometric Properties
 
