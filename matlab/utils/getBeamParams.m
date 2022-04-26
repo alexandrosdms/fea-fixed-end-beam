@@ -28,31 +28,30 @@ params.G        = params.E / 2*(params.ni+1);
 % params.C 				= input("Enter value for scale constant C: ");
 % params.elementsNo = input("Enter numbers of Elements used: ");
 % params.elementType 		= input("Enter element type: ", "s");
-% 
-% % Calculating Moment of Inertia
-% params.I        = 0.001;
-% params.load_Pz  = -38.46*params.C;
 
-%% Geometric Properties
 params.L 				= 2.9;
 params.h                = 2.9 * 100;
 getAng                  = 20;
 params.angleA           = getAng * pi/180;
 params.C 				= 1.2;
 params.elementsNo = 4;
+params.load_Pz  = -38.46*params.C;
 
-if userMode && sol == 1
-    params.elementType = "Euler";
-elseif userMode && sol == 2
-    params.elementType = "Shear Full";
-elseif userMode && sol == 3
-    params.elementType = "Shear Reduced";
-elseif (userMode && sol == 4) || assignMode
-    params.elemetType = ["Euler"; "Shear Full"; "Shear Reduced";];
+% Calculating Moment of Inertia
+params.I        = 0.001;
 
-params.I = 0.001;
 
-params.nodalLoads = getNodalLoads(params.load_Pz, L, params.elementsNo);
+%% Geometric Properties
+
+
+% if userMode && sol == 1
+%     params.elementType = "Euler";
+% elseif userMode && sol == 2
+%     params.elementType = "Shear Full";
+% elseif userMode && sol == 3
+%     params.elementType = "Shear Reduced";
+% elseif (userMode && sol == 4) || assignMode
+%     params.elemetType = ["Euler"; "Shear Full"; "Shear Reduced";];
 
 end
 

@@ -15,5 +15,11 @@ Ke = params.E * params.I / params.Le * [12/Le^2   6/Le^2   -12/Le^2   6/Le;
                                         ];
 
 K_Total = defStiffnessMat(Ke, params);
+nodalLoads = getNodalLoads(params);
+
+w_theta = nodalLoads/K_Total;
+
+
+
 end
 
