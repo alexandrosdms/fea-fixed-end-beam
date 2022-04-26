@@ -35,6 +35,7 @@ getAng                  = 20;
 params.angleA           = getAng * pi/180;
 params.C 				= 1.2;
 params.elementsNo = 4;
+params.nodes = params.elementsNo + 1;
 params.load_Pz  = -38.46*params.C;
 
 % Calculating Moment of Inertia
