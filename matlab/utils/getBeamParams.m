@@ -35,11 +35,11 @@ params.h                = 2.9 * 100;
 getAng                  = 20;
 params.angleA           = getAng * pi/180;
 params.C 				= 1.2;
-params.elementsNo = 4;
-params.load_Pz  = -38.46*params.C;
+params.elementsNo       = 4;
+params.load_Pz          = -38.46*params.C;
 
 % Calculating Moment of Inertia
-params.I        = 0.001;
+params.I        = 0.001e-4;
 
 % FEM Associated
 nodeDOF = 2;

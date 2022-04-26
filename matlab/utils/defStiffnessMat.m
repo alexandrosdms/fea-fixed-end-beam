@@ -5,7 +5,7 @@ function [K_Total] = defStiffnessMat(Ke, params)
 elementsNo = params.elementsNo;
 % elementsNo = 4;
 
-totalDOF = 2*(elementsNo + 1);
+totalDOF = params.totalDOF;
 K_Total = zeros(totalDOF);
 
 for element = 1:elementsNo
@@ -15,7 +15,7 @@ for element = 1:elementsNo
         row = row + 2; column = column + 2;
     end
     K_Total(row:row+3,column:column+3) = ...
-        K_Total(row:row+3,column:column+3) + Ke;
+        K_Total(row:row+3,column:column+3) + Ke(:,:);
     
 end
 end
