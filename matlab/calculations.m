@@ -14,9 +14,9 @@ Le = params.Le;
 E = params.E;
 I = params.I;
 
-Ke = E*I / Le * [12/Le^2   6/Le^2   -12/Le^2   6/Le;
+Ke = E*I / Le * [12/Le^2   6/Le   -12/Le^2   6/Le;
                  6/Le      4        -6/Le      2;
-                 -12/Le    -6/Le    12/Le^2    -6/Le;
+                 -12/Le^2    -6/Le    12/Le^2    -6/Le;
                  6/Le      2        -6/Le      4;
                  ];
 
@@ -41,15 +41,19 @@ H4 = 0.25 * (1+xi).^2 .* (1-xi);
 
 wBeam = zeros(size(x,1),1);
 for element = 1:params.elementsNo
-    wElement = H1*u(element) + H3*u(element+2) + ...
-        params.Le * (H2*u(element+1)+H4*u(element+3));
-
     if element == 1
+        wElement = H1*u(element) + H3*u(element+2) + ...
+            params.Le/2 * (H2*u(element+1)+H4*u(element+3));
         wBeam(1:pointsNo) = wElement(:);
     else
+        ii = 2*element-1;
+        wElement = H1*u(ii) + H3*u(ii+2) + ...
+            params.Le/2 * (H2*u(ii+1)+H4*u(ii+3));
         wBeam((element-1)*pointsNo:element*pointsNo-1) = wElement(:);
     end
 end
+
+plot(wBeam)
 
 L_h_ratio = params.L/params.h;
 nodeNo_in_the_middle = (params.elementsNo/2) + 1;
