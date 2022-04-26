@@ -20,6 +20,7 @@ prompt_sol = sprintf(['What is the desired solution?',...
                       '\nAll\t\t: 4'...
                       '\n\nEnter your Option ~> ']);
 
+params = getBeamParams;
 
 while true
     prompt_sol;
@@ -32,6 +33,6 @@ while true
 end        
 
 
-[L_h_ratio, w_midpoint, theta_midpoint] = calculations(sol)
+[L_h_ratio, w_midpoint, theta_midpoint] = calculations(sol, params)
 
 
