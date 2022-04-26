@@ -1,5 +1,5 @@
 function [L_h_ratio, w_midpoint, theta_midpoint] = calculations(solFlag)
-%CALCULATIONS Summary of this function goes here
+%CALCULATIONS All the necessary calculations for the assignment
 %   Input:
 %       solFlag         =   flag indicating which solution/solutions are desired
 %   Output:
@@ -9,8 +9,8 @@ function [L_h_ratio, w_midpoint, theta_midpoint] = calculations(solFlag)
 
 params = getBeamParams;
 nodes = params.nodes;
-elementDOF = 2;
-totalDOF = nodes*elementDOF;
+nodeDOF = 2;
+totalDOF = nodes*nodeDOF;
 
 Ke = params.E * params.I / params.Le * [12/Le^2   6/Le^2   -12/Le^2   6/Le;
                                         6/Le      4        -6/Le      2;
