@@ -1,6 +1,8 @@
 function nodalLoads = getNodalLoads(params)
-%NODALFORCES Compute equivalent loads at the nodes
-%   Detailed explanation goes here
+%NODALFORCES Compute load vector for solution
+%   Attention must be paid in that this function works only for and even number
+%   of elements, where there's a node in the middle of the beam, where the load
+%   is applied.
 
 load = params.load_Pz;
 beamLength = params.L;

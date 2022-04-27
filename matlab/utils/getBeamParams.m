@@ -1,4 +1,16 @@
-function params = getBeamParams
+% Alexandros Dimas
+% Department of Mechanical Enginnering & Aeronautics
+% University of Patras
+% Applied Mechanics Laboratory
+% Finite Element Method II
+% Lab Assignment 1
+% Spring 2022
+%
+% This the main routine of the code. The necessary plots are produced
+% only for option 4 [All] of the prompt message.
+
+function params = getBeamParams(solFlag, in_elementsNo, in_L_h)
+
 %GETBEAMPARAMS Returns initialized Beam Parameters
 %   Output params is a structure with fields:
 %       E           =   Young Modulus in [Pa]
@@ -12,52 +24,93 @@ function params = getBeamParams
 %       load_Pz     =   The applied force at the midpoint in [N]
 %       I           =   Moment of inertia for the cross section around bending
 %                       axis in [m^4]
-%       nodalLoads  =   A [1 X 2 * (elementsNo+1)] vector representing the
-%                       loads corresponding to each degree of freedom
+
+
 
 %% Material Properties
-params.E        = 67.1e9;
-params.ni       = 0.315;
-params.G        = params.E / 2*(params.ni+1);
+E        = 67.1e9;
+ni       = 0.315;
+G        = E / 2*(ni+1);
 
 %% Geometric Properties
-% params.L 				= input("Enter Length of the beam in meters: ");
-% params.h              = input("Enter Radius of Arc in meters : ");
-% getAng                  = input ("Enter value of angle alpha in degrees:");
-% params.angleA           = getAng * pi/180;
-% params.C 				= input("Enter value for scale constant C: ");
-% params.elementsNo = input("Enter numbers of Elements used: ");
-% params.elementType 		= input("Enter element type: ", "s");
-% params.load_Pz  = input("Enter load Value with the appropriate sign: ");
 
-params.L 				= 2.9;
-params.h                = 2.9 * 100;
-getAng                  = 20;
-params.angleA           = getAng * pi/180;
-params.C 				= 1.2;
-params.elementsNo       = 4;
-params.load_Pz          = -38.46*params.C;
+if nargin ==1
+    L_h = 100;
+    elementsNo = 20;
+elseif nargin == 2
+    L_h = 100;
+    elementsNo = in_elementsNo;
+elseif nargin == 3
+    elementsNo = in_elementsNo;
+    L_h = in_L_h;
+end
 
-% Calculating Moment of Inertia
-params.I        = 0.001e-4;
+if solFlag ~= 4
+    mode = input("Do you want to enter values manually [Y/n]?","s");
+    if isempty(mode) || mode == lower('y') || mode == lower("yes")
+        test_mode = true;
+    elseif mode == lower('n') || mode == lower("no")
+        test_mode = false;
+    end
+end
 
-% FEM Associated
-nodeDOF = 2;
-params.nodes = params.elementsNo + 1;
-params.totalDOF = params.nodes*nodeDOF;
-params.Le = params.L/params.elementsNo;
+if solFlag ~= 4 && test_mode
+        L 				= input("Enter Length of the beam in meters: ");
+        L_h             = input("Enter L/h ratio: ");
+        getAng          = input ("Enter value of angle alpha in degrees: ");
+        C 				= input("Enter value for scale constant C: ");
+        elementsNo      = input("Enter numbers of Elements used: ");
+        load_Pz         = input("Enter load Value with the appropriate sign: ");
+%         ElementType 		= input("Enter element type: ", "s");
+        h                = L / L_h;
+        angleA           = getAng * pi/180;
+
+else
+    L 				 = 2.9;
+    h                = L / L_h;
+    getAng           = 20;
+    angleA           = getAng * pi/180;
+    C 				 = 1.2;
+    load_Pz          = -38.46*C;
+end
+
+%% Calculated
+area    = h^2 * (angleA/2 - sin(angleA/2)*cos(angleA/2));
+y_bar   = 3*h/2 * ((sin(angleA/2))^3 / (angleA/2 - sin(angleA/2)*cos(angleA/2)));
+I_y     = h^4/4 * (angleA/2 - sin(angleA/2)*cos(angleA/2) ...
+                                        + 2*(sin(angleA/2))^3*cos(angleA/2));
+I       = I_y + area*y_bar^2;
+%% FEM Associated
+nodeDOF         = 2;
+nodes           = elementsNo + 1;
+totalDOF        = nodes*nodeDOF;
+Le              = L/elementsNo;
 
 %% Geometric Properties
 
 
 % if userMode && sol == 1
-%     params.elementType = "Euler";
+%     ElementType = "Euler";
 % elseif userMode && sol == 2
-%     params.elementType = "Shear Full";
+%     ElementType = "Shear Full";
 % elseif userMode && sol == 3
-%     params.elementType = "Shear Reduced";
+%     ElementType = "Shear Reduced";
 % elseif (userMode && sol == 4) || assignMode
-%     params.elemetType = ["Euler"; "Shear Full"; "Shear Reduced";];
+%     ElemetType = ["Euler"; "Shear Full"; "Shear Reduced";];
 
+%% Output
+params.E                = E;
+params.G                = G;
+params.L                = L;
+params.h                = h;
+params.angleA           = angleA;
+params.C 				= C;
+params.elementsNo       = elementsNo;
+params.load_Pz          = load_Pz;
+params.nodes            = nodes;
+params.totalDOF         = totalDOF;
+params.area             = area;
+params.I                = I;
+params.Le               = Le;
 end
 
